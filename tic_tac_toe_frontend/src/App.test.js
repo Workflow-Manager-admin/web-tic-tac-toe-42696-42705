@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders Tic Tac Toe board', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  // Main title should appear
+  expect(screen.getByText(/Tic Tac Toe/i)).toBeInTheDocument();
+  // Should render some squares
+  expect(screen.getAllByRole('button', { name: /empty square/i }).length).toBeGreaterThanOrEqual(1);
 });

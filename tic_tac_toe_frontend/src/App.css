@@ -1,104 +1,229 @@
-/* CSS Variables for Theme Management */
+/* THEME VARIABLES */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --primary: #1976d2;
+  --secondary: #424242;
+  --accent: #ffd600;
+  --bg: #fff;
+  --board-bg: #f8f9fa;
+  --square-hover: #e3f2fd;
+  --win-glow: #ffd60033;
+  --border: #e0e0e0;
+  --text: #212121;
+  --text-muted: #757575;
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+body, .App {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
-.App {
+/* LAYOUT */
+.ttt-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.ttt-header {
   text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: 28px;
+  margin-bottom: 12px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.ttt-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary);
+  letter-spacing: -.01em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.ttt-subtitle {
+  margin: 6px 0 0 0;
+  font-size: 1.05rem;
+  color: var(--secondary);
+  font-weight: 400;
+  letter-spacing: .01em;
 }
 
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+.ttt-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  justify-content: flex-start;
+  gap: 22px;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+/* Board & Squares */
+.ttt-board {
+  display: flex;
+  flex-direction: column;
+  background: var(--board-bg);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 18px 0 #aaa1;
+  border: 1.5px solid var(--border);
+  margin-top: 8px;
+  margin-bottom: 6px;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
+.ttt-row {
+  display: flex;
+}
+
+.ttt-square {
+  background: #fff;
+  border: 2.5px solid var(--primary);
+  width: 72px;
+  height: 72px;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-align: center;
+  vertical-align: middle;
+  outline: none;
+  padding: 0;
+  margin: 4px;
   border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+  transition: background 0.18s, border 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+  box-shadow: 0 2px 6px 0 #eee6;
+  position: relative;
+  user-select: none;
+}
+
+.ttt-square.highlight {
+  background: var(--win-glow);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3.5px var(--accent);
+  animation: ttt-glow 1s infinite alternate ease-in;
+}
+@keyframes ttt-glow {
+  0% { box-shadow: 0 0 0 3.5px var(--accent); }
+  100% { box-shadow: 0 0 15px 6.5px var(--accent); }
+}
+
+.ttt-square:not(:disabled):hover,
+.ttt-square:not(:disabled):focus {
+  background: var(--square-hover);
+  border-color: var(--accent);
+}
+
+.ttt-square:disabled {
+  background: #f0f0f0;
+  color: var(--secondary);
+  cursor: not-allowed;
+}
+
+.ttt-mode-selector {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 12px 0;
+  justify-content: center;
+}
+
+.ttt-mode-selector button {
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  border-radius: 7px;
+  padding: 8px 24px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background .15s, color .15s, box-shadow .18s;
+  opacity: 0.87;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.ttt-mode-selector button:hover,
+.ttt-mode-selector button.selected {
+  background: var(--accent);
+  color: var(--primary);
+  box-shadow: 0 2px 12px #ffd60010;
+  opacity: 1;
 }
 
-.theme-toggle:active {
-  transform: translateY(0);
+.ttt-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+  margin-bottom: 8px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.ttt-message {
+  font-size: 1.17rem;
+  font-weight: 545;
+  color: var(--primary);
+  letter-spacing: .01em;
+}
+
+.ttt-restart-btn {
+  background: var(--accent);
+  color: var(--primary);
+  border: none;
+  border-radius: 5.5px;
+  padding: 7px 18px;
+  font-weight: 600;
+  font-size: 1.03rem;
+  box-shadow: 0 1px 5px #ffee0055;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+  margin-left: 9px;
+}
+.ttt-restart-btn:hover
+{
+  background: var(--primary);
+  color: #fff;
+}
+
+.ttt-turn-message {
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 1.02rem;
+}
+
+/* Footer */
+.ttt-footer {
+  margin: 22px 0 11px 0;
+  text-align: center;
+  font-size: 0.99rem;
+  color: var(--secondary);
+  letter-spacing: .01em;
+}
+.ttt-footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.ttt-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .ttt-board {
+    padding: 4vw;
   }
-  to {
-    transform: rotate(360deg);
+  .ttt-square {
+    width: 18vw;
+    height: 18vw;
+    font-size: 6vw;
+    margin: 2vw 1vw;
+  }
+  .ttt-title {
+    font-size: 1.37rem;
+  }
+  .ttt-footer {
+    font-size: 0.86rem;
+    margin-bottom: 2vw;
   }
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
-  }
+@media (max-width: 400px) {
+  .ttt-square { font-size: 8vw; }
+  .ttt-title { font-size: 1.05rem; }
+  .ttt-footer { font-size: 0.7em; }
 }
